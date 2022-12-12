@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using MyBookShop_Models;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MyBookShop_Models.Models;
 
 namespace MyBookShop_DataAccess.Repository.IRepository
 {

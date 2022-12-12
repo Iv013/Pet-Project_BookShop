@@ -20,7 +20,7 @@ namespace MyBookShop_DataAccess.Repository.IRepository
             bool isTracking = true
             );
 
-        T FirstODefault(
+        T FirstOfDefault(
             Expression<Func<T, bool>> filter = null,                    //функция фильтра возращает бул
             string includeProperty = null,
             bool isTracking = true

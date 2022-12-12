@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace MyBookShop_Models.Models
 {
-    public class OrderHeader
+    public class OrderHistory
     {
         [Key]
+        public int HistoryId { get; set; }
+
         public int Id { get; set; }
-        public string ApplicationUserId { get; set; }
-        [ForeignKey(nameof(ApplicationUserId))]
-        public ApplicationUser ApplicationUser { get; set; }
+ 
         [Required]
         public double FinalOrderTotal { get; set; }
         [Required]
@@ -28,14 +28,11 @@ namespace MyBookShop_Models.Models
         [Required]
         public string Region { get; set; }
         [Required]
-        public string StreetAddress { get; set; }
-        [Required]
         public string OrderStatus { get; set; }
-
         [Required]
         public DateTime DateStartState { get; set; }
         [Required]
         public DateTime DateEndState { get; set; }
-
+  
     }
 }

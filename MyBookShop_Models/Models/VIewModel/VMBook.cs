@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using MyBookShop_Models;
+
+using MyBookShop_Models.Models;
 
 namespace MyBookShop_Models.VIewModel
 {

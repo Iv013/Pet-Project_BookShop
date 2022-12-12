@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using KeyAttribute = System.ComponentModel.DataAnnotations.KeyAttribute;
 
-namespace MyBookShop_Models
+namespace MyBookShop_Models.Models
 {
     public class Book
     {

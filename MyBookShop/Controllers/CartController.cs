@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyBookShop_DataAccess;
 using MyBookShop_DataAccess.Repository.IRepository;
 using MyBookShop_Models;
 using MyBookShop_Models.Models;
 using MyBookShop_Models.VIewModel;
 using MyBookShop_Utility;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -70,7 +65,7 @@ namespace MyBookShop.Controllers
             IEnumerable<Book> bookList = _bookRepo.GetAll(u => prodInCart.Contains(u.BookId), includeProperty:WC.AuthorName);
             BookUserVM BookUserVM = new BookUserVM()
             {
-                ApplicationUser = _appUserRepo.FirstODefault(x => x.Id == userID),
+                ApplicationUser = _appUserRepo.FirstOfDefault (x => x.Id == userID),
                 BookList = bookList.ToList(),
             };
             return View(BookUserVM); ;
@@ -115,7 +110,7 @@ namespace MyBookShop.Controllers
            , City = BookUserVM.ApplicationUser.City
            , Region = BookUserVM.ApplicationUser.Region
            , StreetAddress = BookUserVM.ApplicationUser.StreetAddress
-           , active_state = true
+         
            , DateStartState = DateTime.Now
            , OrderStatus = WC.StatusPending
             };

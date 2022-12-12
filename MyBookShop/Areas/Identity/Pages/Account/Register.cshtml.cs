@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using MyBookShop_Models;
+using MyBookShop_Models.Models;
 using MyBookShop_Utility;
 
 namespace MyBookShop.Areas.Identity.Pages.Account

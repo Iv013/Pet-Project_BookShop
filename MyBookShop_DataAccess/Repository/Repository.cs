@@ -29,7 +29,7 @@ namespace MyBookShop_DataAccess.Repository
             return dbSet.Find(id);
         }
 
-        public T FirstODefault(System.Linq.Expressions.Expression<Func<T, bool>> filter = null, string includeProperty = null, bool isTracking = true)
+        public T FirstOfDefault(System.Linq.Expressions.Expression<Func<T, bool>> filter = null, string includeProperty = null, bool isTracking = true)
         {
             IQueryable<T> query = dbSet;
             if (filter != null)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using MyBookShop_DataAccess.Repository.IRepository;
 using MyBookShop_Models;
+using MyBookShop_Models.Models;
 using MyBookShop_Utility;
 using System;
 using System.Collections.Generic;

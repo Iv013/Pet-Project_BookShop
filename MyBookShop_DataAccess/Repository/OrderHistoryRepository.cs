@@ -9,21 +9,20 @@ using System.Threading.Tasks;
 
 namespace MyBookShop_DataAccess.Repository
 {
-    public class GenreRepository : Repository<Genre>, IGenreRepository
+    public class OrderHistoryRepository : Repository<OrderHistory>, IOrderHistoryRepository
     {
         private readonly ApplicationDBContext _db;
 
-        public GenreRepository(ApplicationDBContext db) : base(db)
+        public OrderHistoryRepository(ApplicationDBContext db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(Genre Genre)
-        {
-            var objFromDB = _db.Genre.FirstOrDefault(x => x.GenreId == Genre.GenreId);
 
-            if (objFromDB != null) ;
-            objFromDB.NameGenre = Genre.NameGenre;
+        public void Update(OrderHistory obj)
+        {
+            _db.OrderHistory.Update(obj);
+
 
         }
 

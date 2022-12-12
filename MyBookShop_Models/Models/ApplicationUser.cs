@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyBookShop_Models
+namespace MyBookShop_Models.Models
 {
     public class ApplicationUser:IdentityUser
     {

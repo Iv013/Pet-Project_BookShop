@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyBookShop_DataAccess;
 using MyBookShop_DataAccess.Repository.IRepository;
-using MyBookShop_Models;
+using MyBookShop_Models.Models;
 
 namespace MyBookShop.Controllers
 {

@@ -12,12 +12,15 @@ namespace MyBookShop.Controllers
         private readonly IOrderHeaderRepository _OrderHeadRepo;
         private readonly IOrderDetailsRepository _OrderDetailsRepo;
         private readonly IAuthorRepository _AuthorRepo;
+        private readonly IOrderHistoryRepository _OrderHistoryRepo;
 
-        public OrderController(IOrderHeaderRepository OrderHeadRepo, IOrderDetailsRepository OrderDetailsRepo, IAuthorRepository AuthorRepo)
+        public OrderController(IOrderHeaderRepository OrderHeadRepo, IOrderDetailsRepository OrderDetailsRepo, IAuthorRepository AuthorRepo,
+            IOrderHistoryRepository OrderHistoryRepo)
         {
             _OrderDetailsRepo = OrderDetailsRepo;
             _OrderHeadRepo = OrderHeadRepo;
             _AuthorRepo = AuthorRepo;
+            _OrderHistoryRepo = OrderHistoryRepo;
         }
         [BindProperty] 
         public OrderVM orderVM { get; set; }
@@ -39,14 +42,14 @@ namespace MyBookShop.Controllers
             orderVM = new OrderVM()
             {
                 // = _.GetAll(x => x.InquiryHeaderId == id, includeProperty: "Book"),
-                OrderHeader = _OrderHeadRepo.FirstODefault(x => x.Id == id),
+                OrderHeader = _OrderHeadRepo.FirstOfDefault(x => (x.Id == id)),
                 OrderDetails = _OrderDetailsRepo.GetAll(x => x.OrderHeaderId == id, includeProperty: "Book").ToList(),
                 Author = new List<Author>()
                 
             };
             foreach (var obj in orderVM.OrderDetails)
             {
-                var tempAutor = _AuthorRepo.FirstODefault(x => x.AuthorId == obj.Book.AuthorId);
+                var tempAutor = _AuthorRepo.FirstOfDefault(x => x.AuthorId == obj.Book.AuthorId);
                 orderVM.Author.Add(tempAutor);
             }
 
@@ -71,37 +74,57 @@ namespace MyBookShop.Controllers
             HttpContext.Session.Set(WC.SessionOrderId, orderVM.OrderHeader.Id);
             return RedirectToAction("Index", "Cart");
         }
-
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete()
-        { 
-            OrderHeader orderHeader= _OrderHeadRepo.FirstODefault(u => u.Id == orderVM.OrderHeader.Id);
-            IEnumerable<OrderDetails> orderDetails = _OrderDetailsRepo.GetAll(u => u.OrderHeaderId == orderHeader.Id);
-            _OrderHeadRepo.Remove(orderHeader);
-            // _inquiryDeatailRepo.RemoveRange(inquiryDeatails);
-            _OrderHeadRepo.Save();
-            //_inquiryDeatailRepo.Save();   
-            return RedirectToAction("Index");
+        public IActionResult InProcess()
+        {
+            OrderHeader orderHeader = _OrderHeadRepo.FirstOfDefault(u => u.Id == orderVM.OrderHeader.Id);
+            AddOrderHistory(orderHeader, WC.StatusInProcess);
+            orderHeader.OrderStatus = WC.StatusInProcess;
+            orderHeader.DateStartState = DateTime.Now;
 
+
+            _OrderHeadRepo.Update(orderHeader);
+            _OrderHeadRepo.Save();
+            TempData[WC.Success] = "Order is In Process";
+            return RedirectToAction(nameof(Index));
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Cancel()
         {
-            OrderHeader orderHeader = _OrderHeadRepo.FirstODefault(u => u.Id == orderVM.OrderHeader.Id);
+            OrderHeader orderHeader = _OrderHeadRepo.FirstOfDefault(u => u.Id == orderVM.OrderHeader.Id);
             IEnumerable<OrderDetails> orderDetails = _OrderDetailsRepo.GetAll(u => u.OrderHeaderId == orderHeader.Id);
+            AddOrderHistory(orderHeader, WC.StatusCancellind);
             _OrderHeadRepo.Remove(orderHeader);
-            // _inquiryDeatailRepo.RemoveRange(inquiryDeatails);
             _OrderHeadRepo.Save();
-            //_inquiryDeatailRepo.Save();   
+   
             return RedirectToAction("Index");
 
         }
 
 
+        private void AddOrderHistory(OrderHeader orderHeader , string status)
+        {
+            OrderHistory orderHistory = new OrderHistory()
+            {
+                Id = orderHeader.Id,
+                FinalOrderTotal = orderHeader.FinalOrderTotal,
+                Region = orderHeader.Region,
+                FullName = orderHeader.FullName,
+                Email = orderHeader.Email,
+                OrderStatus = status,
+                PhoneNumber = orderHeader.PhoneNumber,
+                City = orderHeader.City,
+                DateEndState = DateTime.Now,
+                DateStartState = orderHeader.DateStartState
+            };
 
+            _OrderHistoryRepo.Add(orderHistory);
+            _OrderHistoryRepo.Save();
+
+    
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace MyBookShop_Models.VIewModel
+﻿using MyBookShop_Models.Models;
+
+namespace MyBookShop_Models.VIewModel
 {
     public class BookUserVM
     {

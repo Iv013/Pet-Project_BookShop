@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyBookShop_DataAccess;
 using MyBookShop_DataAccess.Repository.IRepository;
 using MyBookShop_Models;
+using MyBookShop_Models.Models;
 using System.Security.Cryptography;
 
 namespace MyBookShop.Controllers

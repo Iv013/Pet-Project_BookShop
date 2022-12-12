@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MyBookShop_DataAccess;
 using MyBookShop_DataAccess.Repository.IRepository;
 using MyBookShop_Models;
+using MyBookShop_Models.Models;
 using MyBookShop_Models.VIewModel;
 using MyBookShop_Utility;
 using NuGet.ContentModel;
@@ -69,7 +70,7 @@ namespace MyBookShop.Controllers
             }
             else //нужно обновить объект
             {
-                var objfromDB = _bookRep.FirstODefault(u => u.BookId == BookVM.Book.BookId , isTracking: false);
+                var objfromDB = _bookRep.FirstOfDefault(u => u.BookId == BookVM.Book.BookId , isTracking: false);
                 if (files.Count > 0)
                 {
                   //  string upload = webRootPath + WC.ImagePath;
@@ -117,7 +118,7 @@ namespace MyBookShop.Controllers
                 return NotFound();
             }
        //     Product product = _ProdRep.FirstODefault(u => u.Id == id, includeProperty: "Category,ApplicationType");
-            var obj = _bookRep.FirstODefault(u => u.BookId == id, includeProperty: $"{WC.AuthorName},{WC.GenreName}");
+            var obj = _bookRep.FirstOfDefault(u => u.BookId == id, includeProperty: $"{WC.AuthorName},{WC.GenreName}");
             if (obj == null)
             {
                 return NotFound();

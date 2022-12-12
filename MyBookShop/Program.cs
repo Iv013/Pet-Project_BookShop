@@ -32,6 +32,7 @@ builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
 builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
+builder.Services.AddScoped<IOrderHistoryRepository, OrderHistoryRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
