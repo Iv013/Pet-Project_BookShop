@@ -1,0 +1,98 @@
+﻿@using MyBookShop_Utility
+@model IEnumerable<Book>
+@{
+    double itog = 0;
+}
+
+@if (Model.Count() > 0)
+{
+
+    <form method="post">
+        <br />
+        <div class="backgroundWhiteBorder">
+            <div class="container row">
+                <div class="col -8">
+                    <div class="card mt-4">
+                        <div class=" bg-dark text-light p-2 m-0 row container">
+                            <div class="col-6">
+                                <i class="fa fa-shopping-cart"></i> &nbsp;
+                                Shopping Cart
+                            </div>
+                            <div class="col-6 text-right">
+                                <a asp-action="index" asp-controller="Home" class="btn btn-outline-info btn-sm col-6 offset-md-6 ">Продолжить покупки</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class=" d-none d-lg-block">
+                                <div class="row" style="color:#821f3d">
+                                    <div class="col-lg-2">
+                                    </div>
+                                    <div class="col-12 col-lg-7">
+                                        О книге
+                                    </div>
+                                    <div class="col-12 col-lg-2 text-end">
+                                        Цена
+                                    </div>
+                                    <div class="col-6 col-sm-4 col-lg-1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+                            @foreach (var obj in Model)
+                            {
+                                
+                                    itog = itog + obj.Price;
+                                
+                        <div class="row h-100">
+                                    <div class="col-4 col-md-2 text-center py-2">
+                                        <img src="@WC.ImagePath@obj.Image" class="rounded" width="65%" />
+                                    </div>
+                                    <div class="col-8 col-lg-7">
+                                        <h5>@obj.Title</h5>
+                                        <h5 class="text-info">@obj.Author.NameAuthor</h5>
+                                        <div style="font-size:11px;">@obj.ShortDesc</div>
+                                    </div>
+                                    <div class="col-3 col-lg-2 pt-lg-4" style="font-size:11px;">
+                                        <h5 class= "text-end" > @obj.Price р.</h5>
+
+                                    </div>
+                                    <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
+                                        <a asp-action="Remove" asp-route-id="@obj.BookId" class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                            <hr />
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="row">
+                                    <h4 class=" col-9 text-end"> Итого</h4>
+                                    <h4 class="offset-1 col-2"> @itog р.</h4>
+                                </div>
+
+
+                                <div class="col-3 col-lg-2 pt-lg-4" style="font-size:11px;">
+                                    
+                                    
+
+                                </div>
+                                <div class="col-6 col-md-3 offset-md-9">
+                                    <button type="submit" class="btn btn-success form-control ">
+                                        <span>Оформить заказ</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <p>Ваша корзина пуста</p>
+}

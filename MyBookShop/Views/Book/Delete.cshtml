@@ -1,0 +1,156 @@
+﻿@using MyBookShop_Utility
+@model MyBookShop_Models.Book
+
+
+<form method="post" enctype="multipart/form-data">
+ 
+    <div class="border p-3">
+
+        <div class="form row">
+            <h2 class="text-info p-3">Удаление книги</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row col">
+
+                    <div class="col-4">
+                        <label asp-for="Author.NameAuthor" class="mt-2"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Author.NameAuthor" class="form-control m-2" />
+                        <span asp-validation-for="Author.NameAuthor" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row col">
+
+                    <div class="col-4">
+                        <label asp-for="Title" class="mt-2"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Title" class="form-control m-2" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row col">
+                    <div class="col-4">
+                        <label asp-for="Price" class="mt-2"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Price" class="form-control m-2" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row col">
+                    <div class="col-4">
+                        <label asp-for="Amount" class="mt-2"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Amount" class="form-control m-2" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row col">
+                    <div class="col-4">
+                        <label asp-for="ShortDesc" class="mt-2"></label>
+                    </div>
+                    <div class="col-8">
+                        <textarea asp-for="ShortDesc" class="form-control   m-2"></textarea>
+                        <span asp-validation-for="ShortDesc" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row col">
+                    <div class="col-4">
+                        <label asp-for="Description" class="mt-2"></label>
+                    </div>
+                    <div class="col-8">
+                        <textarea asp-for="Description" class="form-control   m-2"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row col">
+
+                    <div class="col-4">
+                        <label asp-for="Genre.NameGenre" class="mt-2"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Genre.NameGenre" class="form-control m-2" />
+                        <span asp-validation-for="Genre.NameGenre" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row col">
+                    <div class="col-4">
+                        Image
+                    </div>
+                    <div class="col-8">
+                        <input type="file" name="files" id="uploadBox" multiple class="form-control m-2" />
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4">
+
+                        <div class="col">
+                         
+                                <input type="submit" class="btn btn-danger w-100  m-2" value="Удалить" />
+                       
+                        </div>
+
+                        <div class="col">
+                            <a asp-action="index" class=" btn btn-success w-100  m-2">  <i class="fa fa-sign-out-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 m-2 offset-2">
+
+                @* Keep this empty *@
+                @if (Model.BookId != 0)
+                {
+                    <img src="@WC.ImagePath@Model.Image" width="100%" style="border-radius:10px; border:1px solid" />
+                }
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 250
+
+
+            });
+        });
+        function validateInput() {
+            if (document.getElementById("uploadBox").value == "") {
+
+                Swal.fire(
+                    'Ошибка!',
+                    'Пожалуйста загрузите картинку',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+}
