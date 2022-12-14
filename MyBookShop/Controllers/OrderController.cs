@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using MyBookShop_DataAccess.Repository.IRepository;
 using MyBookShop_Models;
 using MyBookShop_Models.Models;
@@ -8,19 +9,23 @@ using MyBookShop_Utility;
 namespace MyBookShop.Controllers
 {
     public class OrderController : Controller
-    {
+    {   private readonly IBookRepository _bookRepo;
         private readonly IOrderHeaderRepository _OrderHeadRepo;
         private readonly IOrderDetailsRepository _OrderDetailsRepo;
         private readonly IAuthorRepository _AuthorRepo;
         private readonly IOrderHistoryRepository _OrderHistoryRepo;
 
-        public OrderController(IOrderHeaderRepository OrderHeadRepo, IOrderDetailsRepository OrderDetailsRepo, IAuthorRepository AuthorRepo,
-            IOrderHistoryRepository OrderHistoryRepo)
+        public OrderController(IOrderHeaderRepository OrderHeadRepo, 
+            IOrderDetailsRepository OrderDetailsRepo, 
+            IAuthorRepository AuthorRepo,
+            IOrderHistoryRepository OrderHistoryRepo,
+            IBookRepository bookRepo)
         {
             _OrderDetailsRepo = OrderDetailsRepo;
             _OrderHeadRepo = OrderHeadRepo;
             _AuthorRepo = AuthorRepo;
             _OrderHistoryRepo = OrderHistoryRepo;
+            _bookRepo = bookRepo;
         }
         [BindProperty] 
         public OrderVM orderVM { get; set; }
@@ -41,11 +46,10 @@ namespace MyBookShop.Controllers
         {
             orderVM = new OrderVM()
             {
-                // = _.GetAll(x => x.InquiryHeaderId == id, includeProperty: "Book"),
+              
                 OrderHeader = _OrderHeadRepo.FirstOfDefault(x => (x.Id == id)),
                 OrderDetails = _OrderDetailsRepo.GetAll(x => x.OrderHeaderId == id, includeProperty: "Book").ToList(),
-                Author = new List<Author>()
-                
+                Author = new List<Author>()  
             };
             foreach (var obj in orderVM.OrderDetails)
             {
@@ -77,15 +81,26 @@ namespace MyBookShop.Controllers
         [HttpPost]
         public IActionResult InProcess()
         {
+            ChangeOrderStatus( WC.StatusInProcess);
+            TempData[WC.Success] = "Заказ отправлена на упаковку";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult InDelivery()
+        {
+            ChangeOrderStatus(WC.StatusDelivery);
+            TempData[WC.Success] = "Заказ отправлен в доставку";
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public IActionResult SetOrderComplite()
+        {
+            ChangeOrderStatus(WC.StatusComplited);
             OrderHeader orderHeader = _OrderHeadRepo.FirstOfDefault(u => u.Id == orderVM.OrderHeader.Id);
-            AddOrderHistory(orderHeader, WC.StatusInProcess);
-            orderHeader.OrderStatus = WC.StatusInProcess;
-            orderHeader.DateStartState = DateTime.Now;
-
-
-            _OrderHeadRepo.Update(orderHeader);
-            _OrderHeadRepo.Save();
-            TempData[WC.Success] = "Order is In Process";
+            AddOrderHistory(orderHeader, WC.StatusComplited);
+            DeleteOrder(orderHeader);
+            TempData[WC.Success] = "Заказ закрыт";
             return RedirectToAction(nameof(Index));
         }
 
@@ -96,16 +111,32 @@ namespace MyBookShop.Controllers
         {
             OrderHeader orderHeader = _OrderHeadRepo.FirstOfDefault(u => u.Id == orderVM.OrderHeader.Id);
             IEnumerable<OrderDetails> orderDetails = _OrderDetailsRepo.GetAll(u => u.OrderHeaderId == orderHeader.Id);
+            foreach (var bookoreder in orderDetails)
+            {
+                var bookedit = _bookRepo.FirstOfDefault(x => x.BookId == bookoreder.BookId, includeProperty: $"{WC.GenreName},{WC.AuthorName}");
+                bookedit.Amount++;
+                _bookRepo.Update(bookedit);
+            }
+            _bookRepo.Save();
+
             AddOrderHistory(orderHeader, WC.StatusCancellind);
-            _OrderHeadRepo.Remove(orderHeader);
-            _OrderHeadRepo.Save();
-   
+            _OrderDetailsRepo.RemoveRange(orderDetails);
+            DeleteOrder(orderHeader);
+
+
             return RedirectToAction("Index");
 
         }
 
 
-        private void AddOrderHistory(OrderHeader orderHeader , string status)
+        private void DeleteOrder(OrderHeader orderHeader)
+        {
+            _OrderHeadRepo.Remove(orderHeader);
+            _OrderHeadRepo.Save();
+        }
+
+
+        private void AddOrderHistory(OrderHeader orderHeader, string status )
         {
             OrderHistory orderHistory = new OrderHistory()
             {
@@ -114,7 +145,7 @@ namespace MyBookShop.Controllers
                 Region = orderHeader.Region,
                 FullName = orderHeader.FullName,
                 Email = orderHeader.Email,
-                OrderStatus = status,
+                OrderStatus =  status,
                 PhoneNumber = orderHeader.PhoneNumber,
                 City = orderHeader.City,
                 DateEndState = DateTime.Now,
@@ -123,8 +154,16 @@ namespace MyBookShop.Controllers
 
             _OrderHistoryRepo.Add(orderHistory);
             _OrderHistoryRepo.Save();
+        }
 
-    
+        private void ChangeOrderStatus(string newStatus)
+        {
+            OrderHeader orderHeader = _OrderHeadRepo.FirstOfDefault(u => u.Id == orderVM.OrderHeader.Id);
+            AddOrderHistory(orderHeader, orderHeader.OrderStatus);
+            orderHeader.OrderStatus = newStatus;
+            orderHeader.DateStartState = DateTime.Now;
+            _OrderHeadRepo.Update(orderHeader);
+            _OrderHeadRepo.Save();
         }
     }
 }

@@ -16,10 +16,7 @@ namespace MyBookShop_Models.Models
 
         [Required]
         public int OrderHeaderId { get; set; }
-        [ForeignKey(nameof(OrderHeaderId))]
-        public OrderHeader OrderHeader { get; set; }
 
-       
         [Required]
         public int BookId { get; set; }
         [ForeignKey(nameof(BookId))]

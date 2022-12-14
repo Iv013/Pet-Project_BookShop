@@ -31,6 +31,8 @@
                                             <input type="hidden" asp-for="@Model.BookList[i].Title" />
                                             <input type="hidden" asp-for="@Model.BookList[i].Author.NameAuthor" />
                                             <input type="hidden" asp-for="@Model.BookList[i].BookId" />
+                                            <input type="hidden" asp-for="@Model.BookList[i].Price" />
+                                         
                                             <li class="list-group-item d-flex justify-content-between">
                                                 <div>
                                                     <h6 class="my-0">@Model.BookList[i].Title</h6>
@@ -111,6 +113,7 @@
                                     <div class="col-9">
                                         <input asp-for="ApplicationUser.StreetAddress" type="text" class="form-control" />
                                         <span asp-validation-for="ApplicationUser.StreetAddress" class="text-danger"></span>
+                                        <input type="hidden" asp-for="tempid" />
                                     </div>
                                 </div>
                             </div>

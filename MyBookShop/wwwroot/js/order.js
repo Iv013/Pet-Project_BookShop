@@ -14,6 +14,7 @@ function loadDataTable(url) {
             { "data": "fullName", "width": "15%" },
             { "data": "phoneNumber", "width": "15%" },
             { "data": "email", "width": "15%" },
+            { "data": "orderStatus", "width": "15%" },
             {
                 "data": "id",
                 "render": function (data) {

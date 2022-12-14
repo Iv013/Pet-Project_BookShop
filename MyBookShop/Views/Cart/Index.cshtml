@@ -1,5 +1,5 @@
 ﻿@using MyBookShop_Utility
-@model IEnumerable<MyBookShop_Models.Models.Book>
+@model List<MyBookShop_Models.Models.Book>
 @{
     double itog = 0;
 }
@@ -39,26 +39,26 @@
                             </div>
 
                             <hr />
-                            @foreach (var obj in Model)
+                            @for (int i = 0; i < Model.Count(); i++)
                             {
-                                
-                                    itog = itog + obj.Price;
+                                <input hidden asp-for="@Model[i].BookId" />
+                                itog = itog + Model[i].Price;
                                 
                         <div class="row h-100">
                                     <div class="col-4 col-md-2 text-center py-2">
-                                        <img src="@WC.ImagePath@obj.Image" class="rounded" width="65%" />
+                                        <img src="@WC.ImagePath@Model[i].Image" class="rounded" width="65%" />
                                     </div>
                                     <div class="col-8 col-lg-7">
-                                        <h5>@obj.Title</h5>
-                                        <h5 class="text-info">@obj.Author.NameAuthor</h5>
-                                        <div style="font-size:11px;">@obj.ShortDesc</div>
+                                        <h5>@Model[i].Title</h5>
+                                        <h5 class="text-info">@Model[i].Author.NameAuthor</h5>
+                                        <div style="font-size:11px;">@Model[i].ShortDesc</div>
                                     </div>
                                     <div class="col-3 col-lg-2 pt-lg-4" style="font-size:11px;">
-                                        <h5 class= "text-end" > @obj.Price р.</h5>
+                                        <h5 class="text-end"> @Model[i].Price р.</h5>
 
                                     </div>
                                     <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
-                                        <a asp-action="Remove" asp-route-id="@obj.BookId" class="btn btn-outline-danger">
+                                        <a asp-action="Remove" asp-route-id="@Model[i].BookId" class="btn btn-outline-danger">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>

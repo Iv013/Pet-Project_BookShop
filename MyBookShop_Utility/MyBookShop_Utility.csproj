@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Mailjet.Api" Version="1.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="20.3.0.60" />
   </ItemGroup>
 
 </Project>

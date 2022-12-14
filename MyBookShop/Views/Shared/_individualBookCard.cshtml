@@ -5,7 +5,7 @@
     <!-- Card-->
     <div class="g" style="border:1px solid #222">
             <div class="form-group row">
-                <div class="col-4" >
+                <div class="col-5" >
                     <img class="m-2 " width="135px" height="210px" src="@WC.ImagePath@Model.Image" alt="Card image cap">
                 </div>
             
@@ -22,7 +22,14 @@
                                 <span class="badge p-2 border w-100" style="background-color:lavenderblush; color:black">@Model.Genre.NameGenre</span>
                             </div>
                          <div class="col-6 border-0">
-                            <span class="badge p-2 border w-100" style="background-color:aliceblue; color:black">Цена @Model.Price Р.</span>
+                            @if (Model.Amount > 0)
+                              {
+                                   <span class="badge p-2 border w-100" style="background-color:aliceblue; color:black">Цена @Model.Price Р.</span>
+                             } else
+                             {
+                    <span class="badge p-2 border w-100" style="background-color:yellowgreen; color:black">Нет в наличии</span>
+                             }
+             
                          </div>
                         <div class="col-12 p-1">
                          <a asp-action="Details" asp-route-id="@Model.BookId" class="btn btn-dark form-control btn-sm p-2" style="height:40px">Подробности</a>
