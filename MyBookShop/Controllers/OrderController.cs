@@ -32,7 +32,9 @@ namespace MyBookShop.Controllers
 
         public IActionResult Index()
         {
-            return View();
+           List< OrderHeader> orderHeaders = _OrderHeadRepo.GetAll().ToList();
+
+            return View(orderHeaders);
         }
 
         [HttpGet]

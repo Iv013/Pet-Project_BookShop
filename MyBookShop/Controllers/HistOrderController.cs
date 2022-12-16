@@ -42,6 +42,25 @@ namespace MyBookShop.Controllers
 
             return View(orderHistory);
 
+       
+
+        }
+        public IActionResult Details(int id)
+        {
+            //OrderVM orderVM = new OrderVM()
+            //{
+
+            //    OrderHeader = _OrderHeadRepo.FirstOfDefault(x => (x.Id == id)),
+            //    OrderDetails = _OrderDetailsRepo.GetAll(x => x.OrderHeaderId == id, includeProperty: "Book").ToList(),
+            //    Author = new List<Author>()
+            //};
+            //foreach (var obj in orderVM.OrderDetails)
+            //{
+            //    var tempAutor = _AuthorRepo.FirstOfDefault(x => x.AuthorId == obj.Book.AuthorId);
+            //    orderVM.Author.Add(tempAutor);
+            //}
+
+            return View();
         }
     }
 }

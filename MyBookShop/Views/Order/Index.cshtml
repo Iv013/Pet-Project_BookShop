@@ -1,9 +1,11 @@
-﻿
+﻿@model List<MyBookShop_Models.Models.OrderHeader>
+@using MyBookShop_Utility
+
 <br />
 <div class="border p-3 bg-white">
     <div class="d-flex justify-content-between mb-3">
         <div class="p-2">
-            <h2 class="text-info">Управелние заказами </h2>
+            <h2 class="text-info">Управление заказами </h2>
         </div>
 
     </div>
@@ -17,13 +19,48 @@
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Текущий статус</th>
+                <th>Сумма заказа</th>
                 <th></th>
             </tr>
         </thead>
+
+        <tbody>
+            
+          @foreach (var obj in Model)
+            {
+            
+                var delta = DateTime.Now - obj.DateStartState;
+                var stcol = "background-color:lightgreen";
+                if (obj.OrderStatus == WC.StatusPending){
+                    stcol = (delta.TotalHours > 1 && delta.TotalHours < 2) ? "background-color:Yellow" : delta.TotalHours > 2 ? "background-color:red" : "background-color:lightgreen";
+                }
+                if (obj.OrderStatus == WC.StatusInProcess)
+                    stcol = (delta.TotalHours > 12 && delta.TotalHours < 24) ? "background-color:Yellow" : delta.TotalHours > 24 ? "background-color:red" : "background-color:lightgreen";
+                if (obj.OrderStatus == WC.StatusDelivery)
+                    stcol = (delta.TotalDays > 5 && delta.TotalDays < 8) ? "background-color:Yellow" : delta.TotalDays > 8 ? "background-color:red" : "background-color:lightgreen";
+
+        <tr>
+                    <td width="5%">@obj.Id></td>
+            <td width="25%">@obj.FullName</td>
+            <td width="15%">@obj.PhoneNumber</td>
+
+            <td width="20%">@obj.Email</td>
+
+                    <td width="20%" style=@stcol>@obj.OrderStatus</td>
+                    <td width="10%">@obj.FinalOrderTotal руб.</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@obj.Id" class="btn btn-primary "> <i class='fas fa-list'></i></a>
+                     
+                    </td>
+        </tr>
+                    }
+        </tbody>
     </table>
 
 </div>
 
+@*
 @section Scripts{
     <script src="~/js/order.js"></script>
 }
+*@
