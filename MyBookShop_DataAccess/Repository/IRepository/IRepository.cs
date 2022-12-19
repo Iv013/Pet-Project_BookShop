@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace MyBookShop_DataAccess.Repository.IRepository
 {
-    public interface IRepository<T> where T:class   //необзодио создать интерфейс с дженерки типом
+    public interface IRepository<T> where T:class   
     {
-            T Find(int id);             //метод который будет искать данные по id
+            T Find(int id);            
 
         //долее метод который будет возвращать перечисление наших параметров Т, у него несколько входных параметров
         IEnumerable<T> GetAll(
             Expression<Func<T, bool>> filter = null,                    //функция фильтра возращает бул
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBY = null,
+           Func<IQueryable<T>, 
+              IOrderedQueryable<T>> orderBY = null,
             string includeProperty = null,
             bool isTracking = true
             );

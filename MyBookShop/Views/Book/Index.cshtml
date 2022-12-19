@@ -33,13 +33,16 @@
                 <tbody>
                     @foreach (var obj in Model)
                     {
+                        var color = "";
+                        if (@obj.Amount == 0) color = "color:red";
+
                         <tr>
 
-                            <td width="20%">@obj.Author.NameAuthor</td>
-                            <td width="20%">@obj.Title</td>
+                            <td width="25%">@obj.Author.NameAuthor</td>
+                            <td width="25%">@obj.Title</td>
                             <td width="20%">@obj.Genre.NameGenre</td>
                             <td width="10%">@obj.Price</td>
-                            <td width="10%">@obj.Amount</td>
+                            <td width="10%" class="text-center" style=@color><strong>@obj.Amount</strong></td>
 
                             <td>
                                 <div>

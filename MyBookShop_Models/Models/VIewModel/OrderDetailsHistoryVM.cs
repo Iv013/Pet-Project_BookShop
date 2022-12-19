@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace MyBookShop_Models.Models.VIewModel
 {
-    public class OrderHistoryVM
+    public class OrderDetailsHistoryVM
     {
-        public IEnumerable<OrderHistory> OrderHistory { get; set; }
-
-        public IEnumerable<SelectListItem> statusList { get; set; }
-        public string Status { get; set; }
-
+        public OrderHistory SelectedOrderHistory { get; set; }
+        public List<OrderDetails> detailList { get; set; }
+       
     }
 }
