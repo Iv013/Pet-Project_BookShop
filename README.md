@@ -41,7 +41,6 @@
 </ol>
 <h4>What is planned to be added:</h4>
  <ul>
-
         <li>Adding a payment service;</li>
          <li>Adding deep sales statistics.</li>
     </ul>
