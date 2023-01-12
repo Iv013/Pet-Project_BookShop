@@ -54,9 +54,10 @@ namespace MyBookShop.Controllers
             OrderDetailsHistoryVM orderHistory = new OrderDetailsHistoryVM()
             {
                 SelectedOrderHistory = _OrderHistoryRepo.FirstOfDefault(x => x.HistoryId == id),
-                detailList = _OrderDetailsRepo.GetAll(x => x.OrderHeaderId == id, includeProperty: "Book").ToList(),
+               // detailList = _OrderDetailsRepo.GetAll(x => x.OrderHeaderId == id, includeProperty: "Book").ToList(),
               //  Author = new List<Author>()
             };
+            orderHistory.detailList = _OrderDetailsRepo.GetAll(x => x.OrderHeaderId == orderHistory.SelectedOrderHistory.Id, includeProperty: "Book").ToList();
             orderHistory.detailList.ForEach(x => x.Book.Author = _AuthorRepo.FirstOfDefault(a => a.AuthorId == x.Book.AuthorId));
      
             //{

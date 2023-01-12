@@ -5,9 +5,15 @@ using MyBookShop_DataAccess;
 using MyBookShop_DataAccess.Repository;
 using MyBookShop_DataAccess.Repository.IRepository;
 using MyBookShop_Utility;
+using MyProject_DataAccess.Initializer;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
+builder.Host.UseSerilog(); // <-- Add this line
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
@@ -33,6 +39,7 @@ builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository
 builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
 builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
 builder.Services.AddScoped<IOrderHistoryRepository, OrderHistoryRepository>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +61,9 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+
+
+    );
 
 app.Run();

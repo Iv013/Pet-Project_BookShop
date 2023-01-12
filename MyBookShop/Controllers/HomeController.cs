@@ -7,6 +7,7 @@ using MyBookShop_Models;
 using MyBookShop_Models.ViewModel;
 
 using MyBookShop_Utility;
+using MyProject_DataAccess.Initializer;
 using System.Diagnostics;
 
 namespace MyBookShop.Controllers
@@ -19,16 +20,19 @@ namespace MyBookShop.Controllers
         private readonly IGenreRepository _genreRepo; 
         private readonly IBookRepository _bookRepo
             ;
+        private readonly IDbInitializer _dbInitializer;
 
-        public HomeController(ILogger<HomeController> logger,  IGenreRepository genreRepo, IBookRepository bookRepo  )
+        public HomeController(ILogger<HomeController> logger,  IGenreRepository genreRepo, IBookRepository bookRepo, IDbInitializer dbInitializer)
         {
             _logger = logger;
             _bookRepo = bookRepo;
             _genreRepo=genreRepo;
+            _dbInitializer = dbInitializer;
         }
 
         public IActionResult Index()
         {
+            _dbInitializer.Initialize();
             HomeVM homeVM = new HomeVM()
             {
                 Books = _bookRepo.GetAll(includeProperty: $"{WC.AuthorName},{WC.GenreName}"),
