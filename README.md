@@ -37,11 +37,11 @@
          <li>Ability to change the user's order data (before order confirmation);</li>
          <li>Managing current orders, changing order statuses (pending, In progress, delivery, completed);</li>
          <li>View and analyze order history.</li>
-      </ul> 
+      </ul>
 </ol>
 <h4>What is planned to be added:</h4>
  <ul>
-       <li>Initializing the database and creating the first user;</li>
+
         <li>Adding a payment service;</li>
          <li>Adding deep sales statistics.</li>
     </ul>
